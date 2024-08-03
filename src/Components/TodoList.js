@@ -23,19 +23,22 @@ const listTodo = async() => {
 const handleLoadMore = () => {
     if(totalLoaded < 100)
     setSkip(prev => prev + limit);
-   
-
-
 }
 
+const markAsComplete = (id)=>{
+  setTodoList(pretodos => pretodos.map((todo) => todo.id === id ? {...todo, completed: !todo.completed} : todo)) 
+}
 
 return(
     <>
       <h1>TodoList</h1>
       {
-        todoList.map((ele,i) => <ul>
+        todoList.map((ele,i) => (<li key={ele.id} style={{ textDecoration: ele.completed ? 'line-through' : 'none' }}>
           {ele.id} {''} {ele.todo}
-        </ul>)
+          <button onClick={() => markAsComplete(ele.id)}>
+          {ele.completed ? 'Undo' : 'Complete'}
+        </button>
+        </li>))
       }
       {totalLoaded < 100 && (
         <button onClick={handleLoadMore}>Load More</button>
